@@ -80,7 +80,7 @@ export function TransportBoard() {
             <CapacityBar value={shuttle.currentLoad} />
           </div>
 
-          <button className="btn btn-primary btn-sm" onClick={() => alert(`Booking shuttle to ${r.destination}...`)}>Book</button>
+          <button className="btn btn-primary btn-sm" onClick={() => alert(`Booking shuttle to ${shuttle.to}...`)}>Book</button>
         </div>
       ))}
 
