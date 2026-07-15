@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "source": "MOCK DATA — simulated MetLife Stadium layout, not real-time",
+    "description": "Static stadium map data for FanSetu AI demo. Zone coordinates are normalized (0-100 scale).",
+    "stadium": "MetLife Stadium, East Rutherford, NJ",
+    "lastUpdated": "2026-07-15"
+  },
+  "stadium": {
+    "id": "metlife",
+    "name": "MetLife Stadium",
+    "city": "East Rutherford",
+    "state": "NJ",
+    "country": "USA",
+    "capacity": 82500,
+    "lat": 40.8135,
+    "lng": -74.0744,
+    "timezone": "America/New_York",
+    "address": "1 MetLife Stadium Dr, East Rutherford, NJ 07073"
+  },
+  "zones": [
+    { "id": "z1", "name": "Gate A — North", "level": 1, "capacity": 5000, "density": 45, "alertLevel": "normal", "x": 40, "y": 5, "width": 20, "height": 12, "description": "Main north entrance, accessible from Meadowlands Station" },
+    { "id": "z2", "name": "Gate B — Northeast", "level": 1, "capacity": 4500, "density": 38, "alertLevel": "normal", "x": 72, "y": 15, "width": 16, "height": 12, "description": "Northeast entry point, premium parking access" },
+    { "id": "z3", "name": "Gate C — East", "level": 1, "capacity": 5200, "density": 82, "alertLevel": "warning", "x": 83, "y": 40, "width": 12, "height": 16, "description": "East entrance, heavy pre-match congestion typical" },
+    { "id": "z4", "name": "Gate D — Southeast", "level": 1, "capacity": 4800, "density": 23, "alertLevel": "normal", "x": 72, "y": 68, "width": 16, "height": 12, "description": "Southeast entry, least congested — AI recommended" },
+    { "id": "z5", "name": "Gate E — South", "level": 1, "capacity": 5000, "density": 55, "alertLevel": "normal", "x": 40, "y": 83, "width": 20, "height": 12, "description": "South entrance, shuttle drop-off zone nearby" },
+    { "id": "z6", "name": "Gate F — West", "level": 1, "capacity": 5500, "density": 91, "alertLevel": "critical", "x": 5, "y": 40, "width": 12, "height": 16, "description": "West entrance, CRITICAL — overflow in progress" },
+    { "id": "z7", "name": "Lower Bowl — Sections 100-115", "level": 2, "capacity": 18000, "density": 72, "alertLevel": "watch", "x": 25, "y": 25, "width": 50, "height": 50, "description": "Main lower bowl seating — currently filling fast" },
+    { "id": "z8", "name": "Club Level — East", "level": 3, "capacity": 4000, "density": 48, "alertLevel": "normal", "x": 65, "y": 30, "width": 15, "height": 15, "description": "Premium club level east side" },
+    { "id": "z9", "name": "Upper Deck — North", "level": 4, "capacity": 8000, "density": 61, "alertLevel": "watch", "x": 30, "y": 10, "width": 40, "height": 12, "description": "Upper deck north stand" },
+    { "id": "z10", "name": "Food Court — Level 1", "level": 1, "capacity": 2000, "density": 94, "alertLevel": "critical", "x": 20, "y": 45, "width": 15, "height": 10, "description": "CRITICAL: Primary food court. AI redirect active." }
+  ],
+  "amenities": [
+    { "id": "a1", "name": "Food Court A (North)", "type": "food", "level": 1, "section": "North", "waitMinutes": 5, "isOpen": true, "x": 42, "y": 8, "zoneId": "z1" },
+    { "id": "a2", "name": "Food Court B (South)", "type": "food", "level": 1, "section": "South", "waitMinutes": 12, "isOpen": true, "x": 42, "y": 88, "zoneId": "z5" },
+    { "id": "a3", "name": "Food Court C (West — OVERCROWDED)", "type": "food", "level": 1, "section": "West", "waitMinutes": 28, "isOpen": true, "x": 8, "y": 42, "zoneId": "z10" },
+    { "id": "a4", "name": "Restroom Block 1 (North)", "type": "restroom", "level": 1, "section": "North", "waitMinutes": 3, "isOpen": true, "x": 38, "y": 12, "zoneId": "z1" },
+    { "id": "a5", "name": "Restroom Block 2 (South)", "type": "restroom", "level": 1, "section": "South", "waitMinutes": 6, "isOpen": true, "x": 55, "y": 82, "zoneId": "z5" },
+    { "id": "a6", "name": "Medical Station 1 (Gate A)", "type": "medical", "level": 1, "section": "North", "waitMinutes": 0, "isOpen": true, "x": 44, "y": 7, "zoneId": "z1" },
+    { "id": "a7", "name": "Medical Station 2 (Gate E)", "type": "medical", "level": 1, "section": "South", "waitMinutes": 0, "isOpen": true, "x": 44, "y": 87, "zoneId": "z5" },
+    { "id": "a8", "name": "Accessibility Hub (Gate A)", "type": "accessibility", "level": 1, "section": "North", "waitMinutes": 0, "isOpen": true, "x": 46, "y": 6, "zoneId": "z1" },
+    { "id": "a9", "name": "Security Checkpoint B", "type": "security", "level": 1, "section": "Northeast", "waitMinutes": 4, "isOpen": true, "x": 74, "y": 17, "zoneId": "z2" },
+    { "id": "a10", "name": "Fan Info Booth (North)", "type": "info", "level": 1, "section": "North", "waitMinutes": 2, "isOpen": true, "x": 50, "y": 9, "zoneId": "z1" }
+  ]
+}

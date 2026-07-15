@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "source": "MOCK DATA — simulated crowd feed, not real-time",
+    "description": "Represents a snapshot crowd density feed. In production this would be fed from real sensor/ticketing data. Refreshed every 5s by crowdSimulator.ts.",
+    "refreshIntervalMs": 5000
+  },
+  "timestamp": 1720000000000,
+  "totalAttendance": 62480,
+  "capacity": 82500,
+  "entryRate": 340,
+  "exitRate": 12,
+  "bottlenecks": ["Gate C — East", "Food Court Level 1", "Gate F — West"],
+  "zones": [
+    { "id": "z1", "name": "Gate A — North", "density": 45, "alertLevel": "normal", "capacity": 5000, "entryRate": 42, "exitRate": 5 },
+    { "id": "z2", "name": "Gate B — Northeast", "density": 38, "alertLevel": "normal", "capacity": 4500, "entryRate": 35, "exitRate": 3 },
+    { "id": "z3", "name": "Gate C — East", "density": 82, "alertLevel": "warning", "capacity": 5200, "entryRate": 88, "exitRate": 8 },
+    { "id": "z4", "name": "Gate D — Southeast", "density": 23, "alertLevel": "normal", "capacity": 4800, "entryRate": 20, "exitRate": 2 },
+    { "id": "z5", "name": "Gate E — South", "density": 55, "alertLevel": "normal", "capacity": 5000, "entryRate": 51, "exitRate": 5 },
+    { "id": "z6", "name": "Gate F — West", "density": 91, "alertLevel": "critical", "capacity": 5500, "entryRate": 95, "exitRate": 10 },
+    { "id": "z7", "name": "Lower Bowl — Sections 100-115", "density": 72, "alertLevel": "watch", "capacity": 18000, "entryRate": 120, "exitRate": 15 },
+    { "id": "z8", "name": "Club Level — East", "density": 48, "alertLevel": "normal", "capacity": 4000, "entryRate": 30, "exitRate": 5 },
+    { "id": "z9", "name": "Upper Deck — North", "density": 61, "alertLevel": "watch", "capacity": 8000, "entryRate": 65, "exitRate": 8 },
+    { "id": "z10", "name": "Food Court — Level 1", "density": 94, "alertLevel": "critical", "capacity": 2000, "entryRate": 98, "exitRate": 20 }
+  ],
+  "predictions": {
+    "peakEntryInMinutes": 45,
+    "estimatedFullCapacityAt": 1720002700000,
+    "postMatchExitPeak": 1720010800000,
+    "recommendedAction": "Open Gate D as overflow; redirect Zone 10 fans to Gate A food court"
+  }
+}

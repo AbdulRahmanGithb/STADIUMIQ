@@ -793,11 +793,55 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--color-border);
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
+/* ── Accessibility (NFR-3) ───────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-primary);
+  color: white;
+  padding: 8px;
+  z-index: 9999;
+  transition: top 0.2s;
 }
+
+.skip-link:focus {
+  top: 0;
+}
+
+.text-lg { font-size: 1.1rem; }
+.text-xl { font-size: 1.25rem; }
+.text-lg h1 { font-size: 2.2rem; }
+.text-xl h1 { font-size: 2.5rem; }
+.text-lg .btn { font-size: 1rem; }
+.text-xl .btn { font-size: 1.15rem; }
+
+.theme-high-contrast {
+  --color-primary: hsl(214, 100%, 35%);
+  --color-primary-light: hsl(214, 100%, 45%);
+  --color-primary-dark: hsl(214, 100%, 25%);
+  --color-text: hsl(0, 0%, 0%);
+  --color-text-muted: hsl(0, 0%, 20%);
+  --color-text-faint: hsl(0, 0%, 30%);
+  --color-bg: hsl(0, 0%, 100%);
+  --color-surface: hsl(0, 0%, 100%);
+  --color-card: hsl(0, 0%, 100%);
+  --color-border: hsl(0, 0%, 0%);
+  --color-success: hsl(142, 100%, 25%);
+  --color-warning: hsl(38, 100%, 30%);
+  --color-danger: hsl(0, 100%, 35%);
+}
+
+.theme-high-contrast .card {
+  border: 2px solid black;
+}
+.theme-high-contrast .sidebar {
+  border-right: 2px solid black;
+}
+.theme-high-contrast .btn {
+  border: 2px solid black;
+}
+
 
 thead th {
   background: var(--color-surface);

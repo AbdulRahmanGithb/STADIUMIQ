@@ -1,6 +1,7 @@
 import React from 'react';
 import { Bell, Globe, ChevronDown } from 'lucide-react';
 import { RoleSelector } from './RoleSelector';
+import { AccessibilityControls } from './AccessibilityControls';
 import { useAppStore } from '../../store/appStore';
 import { Language } from '../../types';
 
@@ -28,8 +29,13 @@ export function TopBar({ title }: TopBarProps) {
 
   return (
     <header className="topbar">
-      <span className="topbar-title">{title}</span>
+      <div className="topbar-left">
+        {/* Skip to content link (NFR-3.5) */}
+        <a href="#main-content" className="skip-link">Skip to content</a>
+        <span className="topbar-title">{title}</span>
+      </div>
       <div className="topbar-actions">
+        <AccessibilityControls />
         <RoleSelector />
 
         {/* Language Selector */}

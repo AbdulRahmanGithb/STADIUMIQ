@@ -1,188 +1,110 @@
-# ⚽ StadiumIQ — GenAI-Enabled Stadium Operations & Fan Experience Platform
+# FanSetu AI 🏟️
 
-StadiumIQ is a premium, reactive, and responsive full-stack web application designed for the **FIFA World Cup 2026**. Built with React, TypeScript, Vite, and CSS, it utilizes the Google Gemini API to streamline venue operations, crowd monitoring, shuttle logistics, and fan assistance at major tournament venues, starting with a live simulation at **MetLife Stadium (New York/New Jersey)**.
+**A dynamic, AI-powered stadium operations and fan experience platform for FIFA World Cup 2026.**
 
-The solution provides role-based portals for four primary user groups:
-1. **🏟️ Fans**: For seat wayfinding, smart routing, shuttle bookings, and multilingual assistance.
-2. **👷 Venue Staff / Stewards**: For reporting incidents, managing queues, and getting AI-generated response protocols.
-3. **📋 Tournament Organizers**: For tracking stadium-wide KPIs, viewing crowd predictions, and generating automated executive briefings.
-4. **🙋 Volunteers**: For viewing shift schedules, zone assignments, and emergency waypoints.
+Built for Hack2skill "Prompt Wars — Build with AI".
 
----
+## Overview
 
-## 🎨 Technology Stack
-- **Framework**: React 18, TypeScript, Vite
-- **State Management**: Zustand (reactive, global store driving real-time simulated updates)
-- **Styling**: Vanilla CSS (custom light-theme design system featuring clean white backgrounds, blue highlights, and soft shadows)
-- **AI Core**: Google Gemini Pro (briefings) & Gemini Flash (chat, incident protocols)
-- **Visualization**: Recharts (radar, donut, and area charts for operations and sustainability)
-- **Icons**: Lucide React
+FanSetu AI (translating to "Fan Bridge AI") bridges the gap between stadium operations and the fan experience. It provides a real-time simulated environment of MetLife Stadium during a high-stakes match (Brazil vs Argentina), offering tailored views for 4 distinct roles:
 
----
+1. ⚽ **Fan / Attendee**: Navigation, transport recommendations, and accessibility tools.
+2. 👷 **Operations Staff**: Crowd monitoring, incident management, and AI staffing dispatch.
+3. 📋 **Organizer**: Executive KPIs, sustainability metrics, and AI match briefings.
+4. 🙋 **Volunteer**: Task assignments, quick-action checklists, and shift management.
 
-## 📐 Architecture & Workflow Diagrams
+## System Workflows & Architecture
 
-### 1. Overall System Architecture
-The application uses a unidirectional data flow powered by **Zustand** as the reactive state coordinator, which receives continuous updates from the **Crowd Simulation Engine** and queries the **Google Gemini API** asynchronously.
+The application uses **React + Zustand** for the frontend, while a simulated backend (`crowdSimulator.ts`) emits real-time data ticks for crowd density and transit availability. **Google Gemini (1.5 Flash)** is deeply integrated for multilingual support, incident protocols, and context-aware insights.
 
-```mermaid
-graph TD
-    subgraph Client [Browser Client]
-        UI[React UI Components]
-        Store[Zustand Global Store]
-        Sim[Crowd Simulation Engine]
-    end
+### 1. Incident Management & AI Protocol Generation
+When a staff member reports an incident (e.g., Medical Emergency), the data is sent to the Gemini AI to generate a secure, 4-step actionable protocol.
 
-    subgraph External [External APIs]
-        Gemini[Google Gemini API]
-    end
-
-    Sim -->|Pumps updates every 5s| Store
-    Store -->|Re-renders state| UI
-    UI -->|Triggers Actions / Sends Chats| Store
-    Store -->|API Requests| Gemini
-    Gemini -->|Generates Context-Aware Answers| Store
-```
-
-### 2. Role-Based User Portals & View Access
-```mermaid
-graph TD
-    User((User)) -->|Selects Role| RoleSelector{Role Selector}
-    RoleSelector -->|Fan| FanPortal[Fan Portal]
-    RoleSelector -->|Staff| StaffPortal[Staff Portal]
-    RoleSelector -->|Organizer| OrganizerPortal[Organizer Portal]
-    RoleSelector -->|Volunteer| VolunteerPortal[Volunteer Portal]
-
-    FanPortal --> Nav[Navigation / Map]
-    FanPortal --> Shuttles[Transport Board]
-    FanPortal --> Chat[Multilingual AI Chat]
-    
-    StaffPortal --> Heatmap[Crowd Heatmap]
-    StaffPortal --> Incidents[Incident Board]
-    StaffPortal --> Dispatch[Staff Deployment]
-    
-    OrganizerPortal --> KPIs[Operations KPIs]
-    OrganizerPortal --> Charts[Arrival & NPS Projections]
-    OrganizerPortal --> Briefing[Gemini Match Briefing]
-    
-    VolunteerPortal --> Tasks[Shift Task List]
-    VolunteerPortal --> Zone[Zone Assignment]
-```
-
-### 3. AI Assistant Translation & Response Pipeline
 ```mermaid
 sequenceDiagram
-    autonumber
-    actor User as User (e.g. Spanish Fan)
-    participant UI as Chat UI (AIAssistant.tsx)
-    participant Store as App Store (appStore.ts)
-    participant AI as Gemini Service (geminiService.ts)
-    participant LLM as Google Gemini (API)
-
-    User->>UI: Types query (e.g. "¿Dónde está el baño?")
-    UI->>Store: Sends message & captures current Role
-    Store->>AI: Packages message, conversation history, and Role
-    AI->>LLM: Requests completion with System Instructions (Role-Context + Metadata)
-    LLM-->>AI: Returns response in User's language
-    AI-->>Store: Dispatches AI response
-    Store-->>UI: Updates message list reactively
-    UI->>User: Displays response
+    participant Staff as 👷 Staff Member
+    participant UI as React UI (IncidentForm)
+    participant Gemini as 🧠 Gemini AI
+    participant Store as Zustand Store
+    
+    Staff->>UI: Submit Incident (Type, Zone, Severity)
+    UI->>Gemini: Prompt: Analyze incident context & generate 4-step protocol
+    Gemini-->>UI: Returns JSON (protocol array)
+    UI->>Store: addIncident(payload + aiProtocol)
+    Store-->>UI: Updates Incident Board globally
 ```
+
+### 2. Live Crowd Density & Transit Routing
+The simulator updates crowd density per zone every few seconds. When a Fan wants to find the best transit option, the `rankTransitOptions` algorithm computes availability scores.
+
+```mermaid
+flowchart TD
+    A[crowdSimulator.ts] -->|Broadcasts Tick| B(Global App State)
+    B --> C{User Role?}
+    C -->|Fan| D[Transport Hub / Map]
+    C -->|Staff| E[Crowd Heatmap & Deployment]
+    D --> F[Ranked Transit Options based on capacity & ETA]
+    E --> G[AI Staffing Insights (Reassign idle staff)]
+```
+
+### 3. Role-Based AI Assistant
+The AI Chatbot dynamically adapts its personality and allowed actions based on the current user's role and selected language.
+
+```mermaid
+stateDiagram-v2
+    [*] --> CheckRole
+    CheckRole --> Fan: "Help with navigation, food, merch"
+    CheckRole --> Staff: "Provide crowd stats, protocols"
+    CheckRole --> Organizer: "Summarize KPIs, event status"
+    CheckRole --> Volunteer: "List tasks, zones"
+    
+    Fan --> GeminiPrompt
+    Staff --> GeminiPrompt
+    Organizer --> GeminiPrompt
+    Volunteer --> GeminiPrompt
+    GeminiPrompt --> MultilingualOutput
+```
+
+## Key Features
+
+- **Multilingual AI Assistant**: Powered by Google Gemini. Offers contextual, role-aware chat in 10 languages with voice input capabilities.
+- **Smart Navigation & Crowd Heatmaps**: Simulates live crowd density using D3-inspired SVGs. Provides AI-based routing to avoid congestion.
+- **Transport Optimization**: Ranks transit options dynamically based on capacity and departure times (FR-5.2 algorithm).
+- **Automated Incident Management**: AI analyzes incidents in real-time and generates 4-step actionable emergency protocols.
+- **Accessibility First**: WCAG 2.1 AA compliant. Features text-scaling, high-contrast mode, semantic HTML, keyboard navigation, and `aria` landmarks.
+
+## Technology Stack
+
+- **Framework**: React 18 with TypeScript + Vite
+- **State Management**: Zustand (Unidirectional flow)
+- **Styling**: Vanilla CSS (Custom design system, variables, no heavy frameworks)
+- **AI Integration**: Google Gemini API (`@google/generative-ai`)
+- **Icons**: Lucide React
+- **Testing**: Vitest
+
+## Setup Instructions
+
+1. **Clone the repository**
+2. **Install dependencies**: `npm install`
+3. **Environment Variables**:
+   Copy `.env.example` to `.env` and add your Google Gemini API key:
+   ```env
+   VITE_GEMINI_API_KEY="your_api_key_here"
+   ```
+   *(Note: The app will run in "Mock Mode" if no API key is provided, generating simulated offline responses to comply with hackathon offline-grading rules).*
+4. **Run the development server**: `npm run dev`
+5. **Run tests**: `npm run test`
+6. **Deploy to Firebase**:
+   ```bash
+   npm run build
+   firebase deploy --only hosting
+   ```
+
+## Architecture & Assumptions
+
+- **Mock Data**: All live crowd, shuttle, and incident data is simulated via `src/services/crowdSimulator.ts` for demonstration purposes. It runs on `setInterval` loops.
+- **AI Prompts**: Prompts are sanitized and context-aware based on the user's role and language preference.
+- **Hackathon Constraints**: To keep the repository size strictly under 10MB, large dependencies, heavy charting libraries, and high-res media were avoided.
 
 ---
-
-## 📂 Project Structure
-```
-STADIUMIQ/
-├── src/
-│   ├── components/
-│   │   ├── ai/
-│   │   │   └── AIAssistant.tsx         # AI Chat with Web Speech voice recognition
-│   │   ├── crowd/
-│   │   │   └── CrowdHeatmap.tsx        # Live crowd congestion table
-│   │   ├── layout/
-│   │   │   ├── RoleSelector.tsx        # Nav header roles (Fan, Staff, etc.)
-│   │   │   ├── Sidebar.tsx             # Responsive global navigation
-│   │   │   └── TopBar.tsx              # Page headers & alerts indicator
-│   │   ├── navigation/
-│   │   │   └── StadiumMap.tsx          # Interactive SVG stadium map
-│   │   ├── operations/
-│   │   │   └── IncidentBoard.tsx       # Incident list & AI Protocol Generator
-│   │   ├── sustainability/
-│   │   │   └── SustainabilityDashboard.tsx # Environmental metrics & Recharts graphs
-│   │   └── transport/
-│   │       └── TransportBoard.tsx      # Real-time shuttle board & capacity bars
-│   ├── data/
-│   │   └── stadiums.ts                 # Stadium configs & coordinates
-│   ├── pages/
-│   │   ├── AccessibilityPage.tsx       # Accessibility hub & priority queues
-│   │   ├── CrowdPage.tsx               # Crowd monitoring hub
-│   │   ├── Dashboard.tsx               # Dynamic main landing dashboard
-│   │   ├── NavigationPage.tsx          # Indoor route search & quick guides
-│   │   ├── OperationsPage.tsx          # Incident board & staff table
-│   │   ├── OrganizerPage.tsx           # Organizer metrics & Match Briefing Generator
-│   │   ├── SustainabilityPage.tsx      # Green targets wrapper
-│   │   ├── TransportPage.tsx           # Transport schedules & exit planner
-│   │   └── VolunteerPage.tsx           # Volunteer tasks & protocols
-│   ├── services/
-│   │   ├── crowdSimulator.ts           # Background thread simulating stadium crowd updates
-│   │   └── geminiService.ts            # Connector for Gemini Pro / Flash models
-│   ├── store/
-│   │   └── appStore.ts                 # Zustand state manager (alerts, incidents, language)
-│   ├── types/
-│   │   └── index.ts                    # TypeScript types
-│   ├── App.tsx                         # Client router & page routes
-│   ├── index.css                       # Light-mode design system stylesheet
-│   └── main.tsx                        # React bootstrap file
-├── index.html
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
-```
-
----
-
-## 🚀 Getting Started
-
-### 1. Prerequisites
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- NPM (or Yarn / PNPM)
-- [GitHub CLI](https://cli.github.com/) (if pushing or cloning)
-
-### 2. Installation
-Clone the repository:
-```bash
-git clone https://github.com/AbdulRahmanGithb/STADIUMIQ.git
-cd STADIUMIQ
-```
-
-Install dependencies:
-```bash
-npm install
-```
-
-### 3. Setup Environment Variables
-Create a `.env` file in the root directory:
-```bash
-VITE_GEMINI_API_KEY=your_google_gemini_api_key_here
-```
-> **Note**: If `VITE_GEMINI_API_KEY` is not provided or is invalid, the application runs in a simulated **Mock Mode** using deterministic responses so the UI remains fully functional.
-
-### 4. Running the Development Server
-```bash
-npm run dev
-```
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### 5. Production Build
-```bash
-npm run build
-```
-This compiles the TypeScript files and exports the minified bundles to the `dist` folder.
-
----
-
-## 💡 Key Highlights
-- **Reactive Data Simulation**: The `crowdSimulator.ts` updates data every 5 seconds, triggering visual changes in the heatmaps and KPI metrics dynamically.
-- **Multilingual Support**: Supports 10 languages (English, Spanish, French, Arabic, Portuguese, German, Chinese, Japanese, Hindi, Urdu) with translation built directly into the AI greeting and response chain.
-- **Actionable Buttons**: All page elements and quick-action buttons are wired with onClick events to guide users through functional workflows.
+*Created by Abdul Rahman for Prompt Wars 2024.*

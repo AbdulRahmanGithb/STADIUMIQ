@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IncidentBoard } from '../components/operations/IncidentBoard';
+import { IncidentForm } from '../components/operations/IncidentForm';
 import { useAppStore } from '../store/appStore';
 import { CrowdHeatmap } from '../components/crowd/CrowdHeatmap';
 
@@ -14,6 +15,7 @@ const STAFF_MEMBERS = [
 
 export default function OperationsPage() {
   const { addIncident } = useAppStore();
+  const [showForm, setShowForm] = useState(false);
 
   function reportQuickIncident(type: string) {
     addIncident({
@@ -47,11 +49,18 @@ export default function OperationsPage() {
         <button className="btn btn-danger" onClick={() => reportQuickIncident('crowd')}>
           👥 Crowd Alert
         </button>
+        <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
+          {showForm ? 'Cancel Report' : '📝 Detailed Report'}
+        </button>
         <button className="btn btn-ghost" onClick={() => alert('Opening PA announcement system...')}>📻 Broadcast PA</button>
         <button className="btn btn-ghost" onClick={() => alert('Generating shift handover report...')}>📋 Shift Handover</button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+        {showForm && (
+          <IncidentForm onSuccess={() => setShowForm(false)} />
+        )}
+
         {/* Incident board */}
         <div className="card">
           <div className="card-header">

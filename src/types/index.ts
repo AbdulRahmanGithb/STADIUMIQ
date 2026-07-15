@@ -1,4 +1,5 @@
-// ── Shared TypeScript Types for StadiumIQ ─────────────────
+// ── Shared TypeScript Types for FanSetu AI ─────────────────
+// FanSetu AI — Fan Bridge AI for FIFA World Cup 2026
 
 export type UserRole = 'fan' | 'staff' | 'organizer' | 'volunteer';
 
@@ -29,6 +30,9 @@ export interface Zone {
   y: number;
   width: number;
   height: number;
+  description?: string;
+  entryRate?: number;
+  exitRate?: number;
 }
 
 export interface CrowdData {
@@ -60,6 +64,16 @@ export interface Incident {
   resolvedAt?: number;
 }
 
+/** Data shape for the incident submission form (FR-7) */
+export interface IncidentFormData {
+  title: string;
+  description: string;
+  severity: IncidentSeverity;
+  category: IncidentCategory;
+  location: string;
+  zoneId: string;
+}
+
 export interface ShuttleRoute {
   id: string;
   name: string;
@@ -68,9 +82,30 @@ export interface ShuttleRoute {
   frequency: number; // minutes
   capacity: number;
   currentLoad: number; // 0-100
-  nextDeparture: number; // timestamp
+  nextDeparture: number; // relative ms from now
   status: 'on-time' | 'delayed' | 'cancelled';
   delay: number; // minutes
+}
+
+/** Extended transit option from transitOptions.json (SRS §6.3) */
+export interface TransitOption {
+  id: string;
+  type: 'shuttle' | 'train' | 'rideshare' | 'bus';
+  name: string;
+  from: string;
+  to: string;
+  frequency: number; // minutes between departures, 0 = on-demand
+  capacity: number;
+  currentLoad: number; // 0-100 percent full
+  nextDeparture: number; // ms from now (relative offset)
+  status: 'on-time' | 'delayed' | 'cancelled';
+  delay: number; // minutes
+  estimatedMinutes: number;
+  pickupZone: string;
+  price: string;
+  icon: string;
+  /** Availability score (0–100) — computed by rankTransitOptions() */
+  availabilityScore?: number;
 }
 
 export interface Amenity {
@@ -83,6 +118,7 @@ export interface Amenity {
   isOpen: boolean;
   x: number;
   y: number;
+  zoneId?: string;
 }
 
 export interface ChatMessage {
@@ -137,4 +173,15 @@ export interface AIAlert {
   zone?: string;
   timestamp: number;
   dismissed: boolean;
+}
+
+/** Volunteer task for the Volunteer Hub (FR-10) */
+export interface VolunteerTask {
+  id: string;
+  title: string;
+  description: string;
+  zone: string;
+  priority: 'low' | 'medium' | 'high';
+  completed: boolean;
+  dueTime?: number;
 }

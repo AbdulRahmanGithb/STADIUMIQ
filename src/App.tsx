@@ -15,6 +15,8 @@ import OperationsPage from './pages/OperationsPage';
 import VolunteerPage from './pages/VolunteerPage';
 import OrganizerPage from './pages/OrganizerPage';
 
+import { Onboarding } from './components/layout/Onboarding';
+
 // Simple route guard based on role
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles: string[] }) {
   const { role } = useAppStore();
@@ -25,11 +27,18 @@ function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode,
 }
 
 export default function App() {
-  const { role } = useAppStore();
+  const { role, hasOnboarded, highContrast, textSizeLevel } = useAppStore();
+
+  const themeClass = highContrast ? 'theme-high-contrast' : '';
+  const textClass = textSizeLevel === 1 ? 'text-lg' : textSizeLevel === 2 ? 'text-xl' : '';
+
+  if (!hasOnboarded) {
+    return <Onboarding />;
+  }
 
   return (
     <BrowserRouter>
-      <div className="app-layout">
+      <div className={`app-layout ${themeClass} ${textClass}`}>
         <Sidebar />
         <div className="main-content">
           <TopBar title={
@@ -38,7 +47,7 @@ export default function App() {
             role === 'volunteer' ? 'Volunteer Hub' : 'Command Center'
           } />
           
-          <main className="page-content">
+          <main id="main-content" className="page-content">
             <Routes>
               {/* Everyone sees the dashboard, but its content changes based on role */}
               <Route path="/" element={<Dashboard />} />

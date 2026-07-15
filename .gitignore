@@ -1,4 +1,4 @@
-# Logs
+# ── Logs ─────────────────────────────────────────────────────
 logs
 *.log
 npm-debug.log*
@@ -7,12 +7,29 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# ── Dependencies ──────────────────────────────────────────────
 node_modules
+functions/node_modules
+
+# ── Build Output ──────────────────────────────────────────────
 dist
 dist-ssr
 *.local
 
-# Editor directories and files
+# ── Environment Variables (NEVER commit these) ─────────────────
+# .env.example is intentionally NOT ignored — it contains placeholders only
+.env
+.env.local
+.env.*.local
+
+# ── Firebase ──────────────────────────────────────────────────
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.firebaserc
+
+# ── Editor Directories ─────────────────────────────────────────
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -23,6 +40,9 @@ dist-ssr
 *.sln
 *.sw?
 
-# local env files
-.env
-.env*.local
+# ── OS Files ──────────────────────────────────────────────────
+Thumbs.db
+desktop.ini
+
+# ── Vite temp files ────────────────────────────────────────────
+vite.config.ts.timestamp-*
